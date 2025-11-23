@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HSK3 Interactive Study App</title>
+    <title>HSK3 Challenging Words</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -490,8 +490,6 @@
                     
                     {/* Target Context */}
                     <div className="bg-white p-4 rounded-xl shadow-sm border-l-4 border-amber-400 mb-4">
-                        <div className="text-sm text-gray-500 font-bold uppercase mb-1">Translate:</div>
-                        <div className="text-lg text-gray-800 leading-tight">{currentWord.sentence} (Hidden)</div>
                         {/* Actually show the hint based on user request: Show English, build Chinese */}
                         <div className="text-lg text-gray-800 font-bold mt-1">"{currentWord.en}" (Context)</div>
                         <div className="text-sm text-gray-500 italic mt-2">Form the sentence using: <strong>{currentWord.hanzi}</strong></div>
