@@ -61,27 +61,177 @@
         // --- DATA EXTRACTED FROM IMAGE & ENRICHED ---
         // Segments are manually created for the Sentence Builder game logic.
         const WORD_DATA = [
-            { id: 1, hanzi: "搬", pinyin: "bān", en: "to move, to carry", ru: "переезжать; передвигать", sentence: "我朋友搬家了。", sentenceChunks: ["我", "朋友", "搬家", "了"] },
-            { id: 2, hanzi: "北方", pinyin: "běi fāng", en: "north, northern part", ru: "север", sentence: "我妈妈是北方人。", sentenceChunks: ["我", "妈妈", "是", "北方人"] },
-            { id: 3, hanzi: "打算", pinyin: "dǎ suàn", en: "plan, to intend", ru: "планировать", sentence: "这个周末我打算去旅游。", sentenceChunks: ["这个", "周末", "我", "打算", "去", "旅游"] },
-            { id: 4, hanzi: "带", pinyin: "dài", en: "to take along, to bring", ru: "брать с собой", sentence: "小时候爸妈常常带我去旅游。", sentenceChunks: ["小时候", "爸妈", "常常", "带", "我", "去", "旅游"] },
-            { id: 5, hanzi: "地图", pinyin: "dì tú", en: "map", ru: "карта", sentence: "我先在地图上看了一下那个地方。", sentenceChunks: ["我", "先", "在", "地图上", "看了", "一下", "那个", "地方"] },
-            { id: 6, hanzi: "复习", pinyin: "fù xí", en: "to review", ru: "повторять (урок)", sentence: "我把学过的东西都复习了一遍。", sentenceChunks: ["我", "把", "学过的", "东西", "都", "复习了", "一遍"] },
-            { id: 7, hanzi: "跟", pinyin: "gēn", en: "with", ru: "с; следовать", sentence: "我跟朋友都很喜欢喝茶。", sentenceChunks: ["我", "跟", "朋友", "都", "很", "喜欢", "喝茶"] },
-            { id: 8, hanzi: "面包", pinyin: "miàn bāo", en: "bread", ru: "хлеб", sentence: "这家超市的面包又好吃又便宜。", sentenceChunks: ["这家", "超市的", "面包", "又", "好吃", "又", "便宜"] },
-            { id: 9, hanzi: "南方", pinyin: "nán fāng", en: "south, southern part", ru: "юг", sentence: "他是在南方出生，在北方长大的。", sentenceChunks: ["他是", "在", "南方", "出生", "在", "北方", "长大的"] },
-            { id: 10, hanzi: "一直", pinyin: "yī zhí", en: "all the time", ru: "постоянно; всё время", sentence: "他一直都在那个学校当英语老师。", sentenceChunks: ["他", "一直", "都在", "那个", "学校", "当", "英语老师"] },
-            { id: 11, hanzi: "游戏", pinyin: "yóu xì", en: "game", ru: "игра", sentence: "很多人喜欢玩电脑游戏。", sentenceChunks: ["很多", "人", "喜欢", "玩", "电脑", "游戏"] },
-            { id: 12, hanzi: "着急", pinyin: "zháo jí", en: "worried, anxious", ru: "волноваться", sentence: "钥匙丢了，我很着急。", sentenceChunks: ["钥匙", "丢了", "我", "很", "着急"] },
-            { id: 13, hanzi: "周末", pinyin: "zhōu mò", en: "weekend", ru: "выходные", sentence: "我们上周末去爬山了。", sentenceChunks: ["我们", "上周末", "去", "爬山", "了"] },
-            { id: 14, hanzi: "作业", pinyin: "zuò yè", en: "homework", ru: "домашнее задание", sentence: "今天的作业是什么？", sentenceChunks: ["今天的", "作业", "是", "什么"] },
-            { id: 15, hanzi: "把", pinyin: "bǎ", en: "particle / handful", ru: "частица ba / связка", sentence: "我买了一把椅子。", sentenceChunks: ["我", "买了", "一把", "椅子"] },
-            { id: 16, hanzi: "办公室", pinyin: "bàn gōng shì", en: "office", ru: "офис", sentence: "我在找王老师的办公室。", sentenceChunks: ["我", "在", "找", "王老师的", "办公室"] },
-            { id: 17, hanzi: "脚", pinyin: "jiǎo", en: "foot", ru: "нога; ступня", sentence: "他的脚上穿着运动鞋。", sentenceChunks: ["他的", "脚上", "穿着", "运动鞋"] },
-            { id: 18, hanzi: "经理", pinyin: "jīng lǐ", en: "manager", ru: "менеджер; директор", sentence: "我们公司来了一个新经理。", sentenceChunks: ["我们", "公司", "来了", "一个", "新", "经理"] },
-            { id: 19, hanzi: "辆", pinyin: "liàng", en: "m.w. for vehicles", ru: "сч. сл. для транспорта", sentence: "那辆公交车刚开走。", sentenceChunks: ["那辆", "公交车", "刚", "开走"] },
-            { id: 20, hanzi: "楼", pinyin: "lóu", en: "building, floor", ru: "здание; этаж", sentence: "你家住在几楼？", sentenceChunks: ["你家", "住在", "几楼"] },
-            { id: 21, hanzi: "拿", pinyin: "ná", en: "to take, to fetch", ru: "брать; держать", sentence: "我忘带手机了，我要回家拿。", sentenceChunks: ["我", "忘带", "手机了", "我要", "回家", "拿"] },
+            { 
+                id: 1, 
+                hanzi: "讲", 
+                pinyin: "jiǎng", 
+                en: "to speak, to explain", 
+                ru: "говорить; объяснять", 
+                sentence: "这个问题我不太明白，请你给我讲一下。", 
+                sentenceChunks: ["这个问题", "我", "不太明白", "请你", "给我", "讲一下"] 
+            },
+            { 
+                id: 2, 
+                hanzi: "照顾", 
+                pinyin: "zhào gù", 
+                en: "to take care of", 
+                ru: "заботиться; ухаживать", 
+                sentence: "旅行的时候你要照顾好自己。", 
+                sentenceChunks: ["旅行的时候", "你要", "照顾好", "自己"] 
+            },
+            { 
+                id: 3, 
+                hanzi: "最近", 
+                pinyin: "zuì jìn", 
+                en: "recently", 
+                ru: "в последнее время; недавно", 
+                sentence: "爸爸最近身体不太好。", 
+                sentenceChunks: ["爸爸", "最近", "身体", "不太好"] 
+            },
+            { 
+                id: 4, 
+                hanzi: "以前", 
+                pinyin: "yǐ qián", 
+                en: "before, formerly", 
+                ru: "раньше; прежде", 
+                sentence: "你以前是做什么工作的？", 
+                sentenceChunks: ["你", "以前", "是", "做", "什么工作的"] 
+            },
+            { 
+                id: 5, 
+                hanzi: "迟到", 
+                pinyin: "chí dào", 
+                en: "to be late", 
+                ru: "опаздывать", 
+                sentence: "他最近上班经常迟到。", 
+                sentenceChunks: ["他", "最近", "上班", "经常", "迟到"] 
+            },
+            { 
+                id: 6, 
+                hanzi: "变化", 
+                pinyin: "biàn huà", 
+                en: "change, variation", 
+                ru: "изменение; перемена", 
+                sentence: "最近十年这个城市的变化非常大。", 
+                sentenceChunks: ["最近十年", "这个城市的", "变化", "非常大"] 
+            },
+            { 
+                id: 7, 
+                hanzi: "几乎", 
+                pinyin: "jī hū", 
+                en: "almost, nearly", 
+                ru: "почти", 
+                sentence: "他几乎从来不喝酒。", 
+                sentenceChunks: ["他", "几乎", "从来不", "喝酒"] 
+            },
+            { 
+                id: 8, 
+                hanzi: "参加", 
+                pinyin: "cān jiā", 
+                en: "to participate, to join", 
+                ru: "участвовать; присоединяться", 
+                sentence: "我参加了今天的足球比赛。", 
+                sentenceChunks: ["我", "参加了", "今天的", "足球比赛"] 
+            },
+            { 
+                id: 9, 
+                hanzi: "影响", 
+                pinyin: "yǐng xiǎng", 
+                en: "influence, effect", 
+                ru: "влияние; воздействие", 
+                sentence: "晚睡对健康有很大的影响。", 
+                sentenceChunks: ["晚睡", "对健康", "有", "很大的", "影响"] 
+            },
+            { 
+                id: 10, 
+                hanzi: "健康", 
+                pinyin: "jiàn kāng", 
+                en: "health, healthy", 
+                ru: "здоровье; здоровый", 
+                sentence: "这种不健康的东西最好少吃。", 
+                sentenceChunks: ["这种", "不健康的", "东西", "最好", "少吃"] 
+            },
+            { 
+                id: 11, 
+                hanzi: "满意", 
+                pinyin: "mǎn yì", 
+                en: "satisfied, pleased", 
+                ru: "довольный", 
+                sentence: "老板对他的工作很满意。", 
+                sentenceChunks: ["老板", "对", "他的工作", "很满意"] 
+            },
+            { 
+                id: 12, 
+                hanzi: "害怕", 
+                pinyin: "hài pà", 
+                en: "to be afraid, to fear", 
+                ru: "бояться", 
+                sentence: "那个孩子很害怕狗。", 
+                sentenceChunks: ["那个孩子", "很", "害怕", "狗"] 
+            },
+            { 
+                id: 13, 
+                hanzi: "了解", 
+                pinyin: "liǎo jiě", 
+                en: "to understand well", 
+                ru: "понимать; разбираться", 
+                sentence: "他对中国历史非常了解。", 
+                sentenceChunks: ["他", "对", "中国历史", "非常", "了解"] 
+            },
+            { 
+                id: 14, 
+                hanzi: "其实", 
+                pinyin: "qí shí", 
+                en: "actually, in fact", 
+                ru: "на самом деле; фактически", 
+                sentence: "其实你一点都不胖，不需要减肥。", 
+                sentenceChunks: ["其实", "你", "一点都不胖", "不需要", "减肥"] 
+            },
+            { 
+                id: 15, 
+                hanzi: "着急", 
+                pinyin: "zháo jí", 
+                en: "worried, anxious", 
+                ru: "волноваться; беспокоиться", 
+                sentence: "他的手机找不到了，他很着急。", 
+                sentenceChunks: ["他的手机", "找不到了", "他", "很着急"] 
+            },
+            { 
+                id: 16, 
+                hanzi: "突然", 
+                pinyin: "tū rán", 
+                en: "sudden, abruptly", 
+                ru: "вдруг; внезапно", 
+                sentence: "天气突然这么冷。", 
+                sentenceChunks: ["天气", "突然", "这么冷"] 
+            },
+            { 
+                id: 17, 
+                hanzi: "环境", 
+                pinyin: "huán jìng", 
+                en: "environment", 
+                ru: "окружающая среда; обстановка", 
+                sentence: "公园附近的环境非常好。", 
+                sentenceChunks: ["公园附近的", "环境", "非常好"] 
+            },
+            { 
+                id: 18, 
+                hanzi: "附近", 
+                pinyin: "fù jìn", 
+                en: "nearby, vicinity", 
+                ru: "поблизости; окрестности", 
+                sentence: "我们在公司附近的餐厅吃晚饭。", 
+                sentenceChunks: ["我们在", "公司附近的", "餐厅", "吃晚饭"] 
+            },
+            { 
+                id: 19, 
+                hanzi: "舒服", 
+                pinyin: "shū fu", 
+                en: "comfortable", 
+                ru: "удобный; комфортный", 
+                sentence: "今天天气不冷也不热，很舒服。", 
+                sentenceChunks: ["今天", "天气", "不冷也不热", "很舒服"] 
+            }
         ];
 
         // --- UTILS ---
