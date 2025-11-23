@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HSK3 Review Lab – Amber & Co</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React 18 + ReactDOM + Babel (for in-browser JSX) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-orange-50 text-slate-800">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // ===========================
+    // WORD DATA
+    // ===========================
+    // You can freely edit / extend this array.
+    // For each word, Russian can be filled in later.
+    const WORDS = [
+      {
+        id: 1,
+        simp: "搬",
+        trad: "搬",
+        pinyin: "ban1",
+        pos: "verb",
+        english: "to move; to carry",
+        russian: "",
+        sentenceZh: "我朋友搬家了。",
+        sentenceEn: "My friend moved house.",
+        sentenceChunks: ["我朋友", "搬家", "了"]
+      },
+      {
+        id: 2,
+        simp: "北方",
+        trad: "北方",
+        pinyin: "bei3fang1",
+        pos: "noun",
+        english: "north; northern part",
+        russian: "",
+        sentenceZh: "我妈妈是北方人。",
+        sentenceEn: "My mom is from the north.",
+        sentenceChunks: ["我妈妈", "是", "北方人"]
+      },
+      {
+        id: 3,
+        simp: "打算",
+        trad: "打算",
+        pinyin: "da3suan4",
+        pos: "verb",
+        english: "plan; to intend",
+        russian: "",
+        sentenceZh: "这个周末我打算去旅游。",
+        sentenceEn: "I plan to travel this weekend.",
+        sentenceChunks: ["这个周末", "我", "打算", "去旅游"]
+      },
+      {
+        id: 4,
+        simp: "带",
+        trad: "帶",
+        pinyin: "dai4",
+        pos: "verb",
+        english: "to take along; to bring",
+        russian: "",
+        sentenceZh: "小时候爸妈常常带我去旅游。",
+        sentenceEn: "When I was little, my parents often took me traveling.",
+        sentenceChunks: ["小时候", "爸妈", "常常", "带我", "去旅游"]
+      },
+      {
+        id: 5,
+        simp: "地图",
+        trad: "地圖",
+        pinyin: "di4tu2",
+        pos: "noun",
+        english: "map",
+        russian: "",
+        sentenceZh: "我先在地图上看一下那个地方。",
+        sentenceEn: "I'll first look at that place on the map.",
+        sentenceChunks: ["我先", "在地图上", "看一下", "那个地方"]
+      },
+      {
+        id: 6,
+        simp: "复习",
+        trad: "複習",
+        pinyin: "fu4xi2",
+        pos: "verb",
+        english: "to review",
+        russian: "",
+        sentenceZh: "我把学过的东西都复习了一遍。",
+        sentenceEn: "I reviewed everything I had learned once.",
+        sentenceChunks: ["我把", "学过的东西", "都", "复习", "了一遍"]
+      },
+      {
+        id: 7,
+        simp: "跟",
+        trad: "跟",
+        pinyin: "gen1",
+        pos: "prep",
+        english: "with",
+        russian: "",
+        sentenceZh: "我跟朋友都很喜欢喝茶。",
+        sentenceEn: "My friends and I all like drinking tea.",
+        sentenceChunks: ["我跟朋友", "都", "很喜欢", "喝茶"]
+      },
+      {
+        id: 8,
+        simp: "面包",
+        trad: "麵包",
+        pinyin: "mian4bao1",
+        pos: "noun",
+        english: "bread",
+        russian: "",
+        sentenceZh: "这家超市的面包又好吃又便宜。",
+        sentenceEn: "The bread in this supermarket is tasty and cheap.",
+        sentenceChunks: ["这家超市的", "面包", "又好吃", "又便宜"]
+      },
+      {
+        id: 9,
+        simp: "南方",
+        trad: "南方",
+        pinyin: "nan2fang1",
+        pos: "noun",
+        english: "south; southern part",
+        russian: "",
+        sentenceZh: "他是在南方出生，在北方长大的。",
+        sentenceEn: "He was born in the south and grew up in the north.",
+        sentenceChunks: ["他是", "在南方", "出生", "在北方", "长大的"]
+      },
+      {
+        id: 10,
+        simp: "一直",
+        trad: "一直",
+        pinyin: "yi4zhi2",
+        pos: "adv",
+        english: "all the time; continuously",
+        russian: "",
+        sentenceZh: "他一直都在那个学校当英语老师。",
+        sentenceEn: "He has been an English teacher at that school all the time.",
+        sentenceChunks: ["他", "一直", "都在", "那个学校", "当英语老师"]
+      },
+      {
+        id: 11,
+        simp: "游戏",
+        trad: "遊戲",
+        pinyin: "you2xi4",
+        pos: "noun",
+        english: "game",
+        russian: "",
+        sentenceZh: "很多人喜欢玩电脑游戏。",
+        sentenceEn: "Many people like playing computer games.",
+        sentenceChunks: ["很多人", "喜欢", "玩", "电脑游戏"]
+      },
+      {
+        id: 12,
+        simp: "着急",
+        trad: "著急",
+        pinyin: "zhao2ji2",
+        pos: "adj",
+        english: "worried; anxious",
+        russian: "",
+        sentenceZh: "钥匙丢了，我很着急。",
+        sentenceEn: "I lost my keys and I'm very anxious.",
+        sentenceChunks: ["钥匙", "丢了", "我", "很着急"]
+      },
+      {
+        id: 13,
+        simp: "周末",
+        trad: "週末",
+        pinyin: "zhou1mo4",
+        pos: "noun",
+        english: "weekend",
+        russian: "",
+        sentenceZh: "我们上周末去爬山了。",
+        sentenceEn: "We went hiking last weekend.",
+        sentenceChunks: ["我们", "上周末", "去", "爬山", "了"]
+      },
+      {
+        id: 14,
+        simp: "作业",
+        trad: "作業",
+        pinyin: "zuo4ye4",
+        pos: "noun",
+        english: "homework",
+        russian: "",
+        sentenceZh: "今天的作业是什么？",
+        sentenceEn: "What is today's homework?",
+        sentenceChunks: ["今天的", "作业", "是什么"]
+      },
+      {
+        id: 15,
+        simp: "把",
+        trad: "把",
+        pinyin: "ba3",
+        pos: "measure word",
+        english: "for things with handle (chair, key, umbrella, etc.)",
+        russian: "",
+        sentenceZh: "我买了一把椅子。",
+        sentenceEn: "I bought a chair.",
+        sentenceChunks: ["我", "买了", "一把", "椅子"]
+      },
+      {
+        id: 16,
+        simp: "办公室",
+        trad: "辦公室",
+        pinyin: "ban4gong1shi4",
+        pos: "noun",
+        english: "office",
+        russian: "",
+        sentenceZh: "我在找王老师的办公室。",
+        sentenceEn: "I'm looking for Teacher Wang's office.",
+        sentenceChunks: ["我", "在找", "王老师的", "办公室"]
+      },
+      {
+        id: 17,
+        simp: "脚",
+        trad: "腳",
+        pinyin: "jiao3",
+        pos: "noun",
+        english: "foot",
+        russian: "",
+        sentenceZh: "他的脚上穿着运动鞋。",
+        sentenceEn: "He is wearing sneakers on his feet.",
+        sentenceChunks: ["他的脚上", "穿着", "运动鞋"]
+      },
+      {
+        id: 18,
+        simp: "经理",
+        trad: "經理",
+        pinyin: "jing1li3",
+        pos: "noun",
+        english: "manager",
+        russian: "",
+        sentenceZh: "我们公司来了一个新经理。",
+        sentenceEn: "A new manager joined our company.",
+        sentenceChunks: ["我们公司", "来了", "一个", "新经理"]
+      },
+      {
+        id: 19,
+        simp: "辆",
+        trad: "輛",
+        pinyin: "liang4",
+        pos: "measure word",
+        english: "measure word for vehicles",
+        russian: "",
+        sentenceZh: "那辆公交车刚开走。",
+        sentenceEn: "That bus just left.",
+        sentenceChunks: ["那辆", "公交车", "刚", "开走"]
+      },
+      {
+        id: 20,
+        simp: "楼",
+        trad: "樓",
+        pinyin: "lou2",
+        pos: "noun",
+        english: "building; floor",
+        russian: "",
+        sentenceZh: "你家住在几楼？",
+        sentenceEn: "Which floor do you live on?",
+        sentenceChunks: ["你家", "住在", "几楼"]
+      },
+      {
+        id: 21,
+        simp: "拿",
+        trad: "拿",
+        pinyin: "na2",
+        pos: "verb",
+        english: "to take; to fetch",
+        russian: "",
+        sentenceZh: "我忘带手机了，我要回家拿。",
+        sentenceEn: "I forgot my phone; I need to go home to get it.",
+        sentenceChunks: ["我", "忘带", "手机了", "我要", "回家拿"]
+      }
+    ];
+
+    const STORAGE_KEY = "hsk3_review_progress_v1";
+
+    const { useState, useEffect } = React;
+
+    // Utility: shuffle array
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Speech synthesis helper
+    function speak(text, lang = "zh-CN") {
+      if (!("speechSynthesis" in window)) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakWord(word) {
+      speak(word.simp, "zh-CN");
+      setTimeout(() => speak(word.english, "en-US"), 400);
+    }
+
+    function speakSentence(word) {
+      speak(word.sentenceZh, "zh-CN");
+      setTimeout(() => speak(word.sentenceEn, "en-US"), 600);
+    }
+
+    // Generate quiz question
+    function createQuizQuestion() {
+      const word = WORDS[Math.floor(Math.random() * WORDS.length)];
+      const correct = word.english;
+      const options = new Set([correct]);
+      while (options.size < 4 && options.size < WORDS.length) {
+        const random = WORDS[Math.floor(Math.random() * WORDS.length)].english;
+        options.add(random);
+      }
+      return {
+        wordId: word.id,
+        prompt: word.simp,
+        correct,
+        options: shuffle(Array.from(options))
+      };
+    }
+
+    function pickRandomWord() {
+      return WORDS[Math.floor(Math.random() * WORDS.length)];
+    }
+
+    // Sentence state generator
+    function createSentenceState() {
+      const candidates = WORDS.filter(w => w.sentenceChunks && w.sentenceChunks.length > 1);
+      const word = candidates[Math.floor(Math.random() * candidates.length)];
+      const originalChunks = word.sentenceChunks;
+      const chunkObjects = originalChunks.map((txt, idx) => ({
+        id: `${word.id}-${idx}`,
+        text: txt,
+      }));
+      return {
+        wordId: word.id,
+        word,
+        originalChunks,
+        pool: shuffle(chunkObjects),
+        slots: Array(originalChunks.length).fill(null),
+        statuses: Array(originalChunks.length).fill("empty"),
+        lastResult: null
+      };
+    }
+
+    function App() {
+      const [mode, setMode] = useState("flashcard"); // flashcard | quiz | type | sentence
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [isFlipped, setIsFlipped] = useState(false);
+      const [progress, setProgress] = useState({ mastery: {}, sentenceStats: {} });
+
+      const [quiz, setQuiz] = useState(() => createQuizQuestion());
+      const [quizFeedback, setQuizFeedback] = useState(null);
+
+      const [typeWord, setTypeWord] = useState(() => pickRandomWord());
+      const [typeInput, setTypeInput] = useState("");
+      const [typeFeedback, setTypeFeedback] = useState(null);
+
+      const [sentenceState, setSentenceState] = useState(() => createSentenceState());
+
+      const [showWordlist, setShowWordlist] = useState(false);
+
+      // Load progress from localStorage
+      useEffect(() => {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            setProgress(JSON.parse(saved));
+          }
+        } catch (e) {
+          console.warn("Failed to load progress", e);
+        }
+      }, []);
+
+      // Save progress
+      useEffect(() => {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        } catch (e) {
+          console.warn("Failed to save progress", e);
+        }
+      }, [progress]);
+
+      // Keyboard shortcuts for Flashcards
+      useEffect(() => {
+        function handleKey(e) {
+          const tag = e.target.tagName;
+          if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
+
+          const key = e.key.toLowerCase();
+          if (mode === "flashcard") {
+            if (key === " ") {
+              e.preventDefault();
+              setIsFlipped(f => !f);
+            } else if (key === "k") {
+              e.preventDefault();
+              handleKnew();
+            } else if (key === "a") {
+              e.preventDefault();
+              handleAgain();
+            } else if (key === "v") {
+              e.preventDefault();
+              speakWord(WORDS[currentIndex]);
+            }
+          }
+        }
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+      }, [mode, currentIndex, progress]);
+
+      function updateMastery(wordId, delta) {
+        setProgress(prev => {
+          const m = { ...prev.mastery };
+          const current = m[wordId] || 0;
+          m[wordId] = Math.max(0, Math.min(5, current + delta));
+          return { ...prev, mastery: m };
+        });
+      }
+
+      function recordSentenceResult(wordId, correct) {
+        setProgress(prev => {
+          const stats = { ...prev.sentenceStats };
+          const existing = stats[wordId] || { attempts: 0, correct: 0 };
+          const updated = {
+            attempts: existing.attempts + 1,
+            correct: existing.correct + (correct ? 1 : 0),
+          };
+          stats[wordId] = updated;
+          return { ...prev, sentenceStats: stats };
+        });
+      }
+
+      function nextFlashcard() {
+        setIsFlipped(false);
+        setCurrentIndex((i) => (i + 1) % WORDS.length);
+      }
+
+      function handleKnew() {
+        const word = WORDS[currentIndex];
+        updateMastery(word.id, +1);
+        nextFlashcard();
+      }
+
+      function handleAgain() {
+        const word = WORDS[currentIndex];
+        updateMastery(word.id, -1);
+        nextFlashcard();
+      }
+
+      function handleQuizAnswer(option) {
+        const isCorrect = option === quiz.correct;
+        setQuizFeedback(isCorrect ? "✅ Correct!" : "❌ Try again.");
+        if (isCorrect) {
+          updateMastery(quiz.wordId, +1);
+          setTimeout(() => {
+            setQuizFeedback(null);
+            setQuiz(createQuizQuestion());
+          }, 700);
+        } else {
+          updateMastery(quiz.wordId, -0.5);
+        }
+      }
+
+      function resetQuiz() {
+        setQuiz(createQuizQuestion());
+        setQuizFeedback(null);
+      }
+
+      function checkTypeIt() {
+        const answer = typeInput.trim();
+        const correct = typeWord.simp;
+        if (!answer) return;
+        if (answer === correct) {
+          setTypeFeedback("✅ Perfect!");
+          updateMastery(typeWord.id, +1);
+          setTimeout(() => {
+            setTypeWord(pickRandomWord());
+            setTypeInput("");
+            setTypeFeedback(null);
+          }, 700);
+        } else {
+          setTypeFeedback(`❌ Not yet. Correct: ${correct}`);
+          updateMastery(typeWord.id, -0.5);
+        }
+      }
+
+      function resetTypeIt() {
+        setTypeWord(pickRandomWord());
+        setTypeInput("");
+        setTypeFeedback(null);
+      }
+
+      // Sentence builder drag & drop handlers
+      function handleChunkDragStart(e, chunk, fromPool, index) {
+        e.dataTransfer.setData(
+          "application/json",
+          JSON.stringify({ id: chunk.id, fromPool, index })
+        );
+      }
+
+      function handleSlotDrop(e, slotIndex) {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData("application/json"));
+        setSentenceState(prev => {
+          let { pool, slots } = prev;
+          pool = [...pool];
+          slots = [...slots];
+
+          let movingChunk = null;
+
+          if (data.fromPool) {
+            movingChunk = pool[data.index];
+            pool.splice(data.index, 1);
+          } else {
+            movingChunk = slots[data.index];
+            slots[data.index] = null;
+          }
+
+          if (!movingChunk) return prev;
+          if (slots[slotIndex]) {
+            // swap
+            const temp = slots[slotIndex];
+            if (data.fromPool) {
+              pool.splice(data.index, 0, temp);
+            } else {
+              slots[data.index] = temp;
+            }
+          }
+          slots[slotIndex] = movingChunk;
+
+          return {
+            ...prev,
+            pool,
+            slots,
+            statuses: Array(slots.length).fill("empty"),
+            lastResult: null
+          };
+        });
+      }
+
+      function handlePoolDrop(e) {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData("application/json"));
+        setSentenceState(prev => {
+          let { pool, slots } = prev;
+          pool = [...pool];
+          slots = [...slots];
+
+          let movingChunk = null;
+
+          if (data.fromPool) {
+            // already in pool, ignore
+            return prev;
+          } else {
+            movingChunk = slots[data.index];
+            slots[data.index] = null;
+          }
+          if (movingChunk) {
+            pool.push(movingChunk);
+          }
+
+          return {
+            ...prev,
+            pool,
+            slots,
+            statuses: Array(slots.length).fill("empty"),
+            lastResult: null
+          };
+        });
+      }
+
+      function allowDrop(e) {
+        e.preventDefault();
+      }
+
+      function checkSentence() {
+        setSentenceState(prev => {
+          const { originalChunks, slots, word } = prev;
+          const statuses = slots.map((chunk, idx) => {
+            if (!chunk) return "empty";
+            return chunk.text === originalChunks[idx] ? "correct" : "wrong";
+          });
+
+          const allFilled = slots.every(s => s);
+          const allCorrect = allFilled && statuses.every(s => s === "correct");
+
+          if (allCorrect) {
+            speakSentence(word);
+          }
+
+          recordSentenceResult(word.id, allCorrect);
+
+          return {
+            ...prev,
+            statuses,
+            lastResult: allCorrect ? "✅ Great! Sentence complete." : "❌ Something’s off. Adjust and try again."
+          };
+        });
+      }
+
+      function resetSentence() {
+        setSentenceState(createSentenceState());
+      }
+
+      function clearProgress() {
+        if (!window.confirm("Reset all progress?")) return;
+        setProgress({ mastery: {}, sentenceStats: {} });
+      }
+
+      const totalWords = WORDS.length;
+      const masteredCount = WORDS.filter(w => (progress.mastery[w.id] || 0) >= 4).length;
+      const averageMastery =
+        totalWords === 0
+          ? 0
+          : (
+              WORDS.reduce((sum, w) => sum + (progress.mastery[w.id] || 0), 0) /
+              totalWords
+            ).toFixed(1);
+
+      const sentenceAttempts = Object.values(progress.sentenceStats || {}).reduce(
+        (sum, s) => sum + (s.attempts || 0),
+        0
+      );
+      const sentenceCorrect = Object.values(progress.sentenceStats || {}).reduce(
+        (sum, s) => sum + (s.correct || 0),
+        0
+      );
+      const sentenceAccuracy =
+        sentenceAttempts === 0
+          ? "–"
+          : Math.round((sentenceCorrect / sentenceAttempts) * 100) + "%";
+
+      const currentWord = WORDS[currentIndex];
+
+      // ===========================
+      // UI
+      // ===========================
+      return (
+        <div className="min-h-screen flex flex-col">
+          <header className="bg-orange-200/80 backdrop-blur-md border-b border-orange-300 sticky top-0 z-20">
+            <div className="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-orange-900">
+                  HSK3 Character Lab · Review Module
+                </h1>
+                <p className="text-sm text-orange-800">
+                  Flashcards · Quiz · Type-It · Sentence Builder
+                </p>
+              </div>
+
+              <div className="flex gap-2 text-xs sm:text-sm">
+                <div className="px-2 py-1 bg-white/70 rounded-lg shadow-sm">
+                  <span className="font-semibold">{masteredCount}</span> / {totalWords} mastered
+                </div>
+                <div className="px-2 py-1 bg-white/70 rounded-lg shadow-sm">
+                  Avg mastery: <span className="font-semibold">{averageMastery}</span> / 5
+                </div>
+                <div className="px-2 py-1 bg-white/70 rounded-lg shadow-sm">
+                  Sentence accuracy: <span className="font-semibold">{sentenceAccuracy}</span>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1">
+            <div className="max-w-5xl mx-auto px-4 py-4 space-y-4">
+              {/* Mode Switcher */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="inline-flex rounded-2xl bg-orange-100 p-1">
+                  {[
+                    { id: "flashcard", label: "Flashcards" },
+                    { id: "quiz", label: "Quiz" },
+                    { id: "type", label: "Type-It" },
+                    { id: "sentence", label: "Sentence Builder" },
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      onClick={() => setMode(m.id)}
+                      className={
+                        "px-3 py-1.5 text-xs sm:text-sm font-medium rounded-2xl transition " +
+                        (mode === m.id
+                          ? "bg-white shadow text-orange-900"
+                          : "text-orange-700 hover:bg-orange-200/70")
+                      }
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={clearProgress}
+                  className="text-xs sm:text-sm text-red-500 hover:text-red-700 underline underline-offset-2"
+                >
+                  Reset all progress
+                </button>
+              </div>
+
+              {/* Mode Panels */}
+              {mode === "flashcard" && (
+                <section className="grid md:grid-cols-[2fr,1fr] gap-4 items-stretch">
+                  <div className="flex flex-col items-center justify-center">
+                    <div
+                      className="w-full aspect-[4/3] max-w-md bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center cursor-pointer border border-orange-200 hover:border-orange-400 transition"
+                      onClick={() => setIsFlipped(f => !f)}
+                    >
+                      {!isFlipped ? (
+                        <div className="text-center space-y-3">
+                          <div className="text-5xl sm:text-6xl font-semibold text-slate-900">
+                            {currentWord.simp}
+                          </div>
+                          <div className="text-sm text-slate-500">
+                            {currentWord.pinyin} · {currentWord.pos}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center space-y-3 px-4">
+                          <div className="text-sm uppercase tracking-wide text-orange-500">
+                            Meaning
+                          </div>
+                          <div className="text-lg font-semibold">{currentWord.english}</div>
+                          {currentWord.russian && (
+                            <div className="text-sm text-slate-600">{currentWord.russian}</div>
+                          )}
+                          <div className="mt-2 text-base text-slate-700">
+                            {currentWord.sentenceZh}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {currentWord.sentenceEn}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap justify-center gap-2 text-xs sm:text-sm">
+                      <button
+                        onClick={() => setIsFlipped(f => !f)}
+                        className="px-3 py-1.5 rounded-full bg-orange-500 text-white shadow hover:bg-orange-600"
+                      >
+                        Flip (Space)
+                      </button>
+                      <button
+                        onClick={handleKnew}
+                        className="px-3 py-1.5 rounded-full bg-emerald-500 text-white shadow hover:bg-emerald-600"
+                      >
+                        Knew (K)
+                      </button>
+                      <button
+                        onClick={handleAgain}
+                        className="px-3 py-1.5 rounded-full bg-rose-500 text-white shadow hover:bg-rose-600"
+                      >
+                        Again (A)
+                      </button>
+                      <button
+                        onClick={() => speakWord(currentWord)}
+                        className="px-3 py-1.5 rounded-full bg-sky-500 text-white shadow hover:bg-sky-600"
+                      >
+                        Voice (V)
+                      </button>
+                      <button
+                        onClick={nextFlashcard}
+                        className="px-3 py-1.5 rounded-full bg-slate-200 text-slate-800 hover:bg-slate-300"
+                      >
+                        Next
+                      </button>
+                    </div>
+
+                    <p className="mt-2 text-xs text-slate-500">
+                      Shortcuts: Space = flip, K = knew, A = again, V = voice.
+                    </p>
+                  </div>
+
+                  <div className="bg-white/70 rounded-3xl border border-orange-100 p-3 sm:p-4 space-y-2">
+                    <h2 className="font-semibold text-sm sm:text-base text-orange-900">
+                      Word Progress
+                    </h2>
+                    <div className="max-h-64 overflow-y-auto space-y-1 pr-1 text-xs sm:text-sm">
+                      {WORDS.map(w => (
+                        <div
+                          key={w.id}
+                          className={
+                            "flex items-center justify-between rounded-2xl px-2 py-1 " +
+                            (w.id === currentWord.id ? "bg-orange-100" : "hover:bg-orange-50")
+                          }
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-lg">{w.simp}</span>
+                            <span className="text-[11px] text-slate-500">{w.pinyin}</span>
+                            <span className="text-[11px] text-slate-400 truncate max-w-[7rem]">
+                              {w.english}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {[0,1,2,3,4].map(i => (
+                              <span
+                                key={i}
+                                className={
+                                  "w-1.5 h-4 rounded-full " +
+                                  ((progress.mastery[w.id] || 0) > i
+                                    ? "bg-orange-500"
+                                    : "bg-slate-200")
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {mode === "quiz" && (
+                <section className="bg-white rounded-3xl shadow-md border border-orange-100 p-4 sm:p-6 space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h2 className="text-lg font-semibold text-orange-900">
+                      Quiz · Choose the correct meaning
+                    </h2>
+                    <button
+                      onClick={resetQuiz}
+                      className="text-xs text-slate-500 hover:text-slate-700 underline underline-offset-2"
+                    >
+                      New question
+                    </button>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-6 items-start">
+                    <div className="flex-1 space-y-3">
+                      <div className="text-center">
+                        <div className="text-5xl font-bold mb-2">{quiz.prompt}</div>
+                        <div className="text-xs text-slate-500">
+                          Click an option. Correct answer increases mastery.
+                        </div>
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {quiz.options.map(opt => (
+                          <button
+                            key={opt}
+                            onClick={() => handleQuizAnswer(opt)}
+                            className="w-full text-left px-3 py-2 rounded-2xl border border-slate-200 hover:border-orange-400 hover:bg-orange-50 text-sm"
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                      {quizFeedback && (
+                        <div className="text-sm font-medium mt-1">
+                          {quizFeedback}
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-full sm:w-64 bg-orange-50/60 rounded-2xl p-3 text-xs space-y-2 border border-orange-100">
+                      <div className="font-semibold text-orange-900">Tips</div>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Say the Chinese aloud before choosing.</li>
+                        <li>After answering, try to recall the example sentence.</li>
+                        <li>Use Flashcards or Type-It for deeper review.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {mode === "type" && (
+                <section className="bg-white rounded-3xl shadow-md border border-orange-100 p-4 sm:p-6 space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h2 className="text-lg font-semibold text-orange-900">
+                      Type-It · English → 汉字
+                    </h2>
+                    <button
+                      onClick={resetTypeIt}
+                      className="text-xs text-slate-500 hover:text-slate-700 underline underline-offset-2"
+                    >
+                      New word
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-orange-500 mb-1">
+                        Meaning
+                      </div>
+                      <div className="text-lg font-semibold">{typeWord.english}</div>
+                      {typeWord.russian && (
+                        <div className="text-sm text-slate-600">{typeWord.russian}</div>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-700">
+                        Type the Chinese characters:
+                      </label>
+                      <input
+                        className="w-full rounded-2xl border border-slate-300 px-3 py-2 text-lg tracking-wide focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        value={typeInput}
+                        onChange={(e) => setTypeInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            checkTypeIt();
+                          }
+                        }}
+                      />
+                      <div className="text-xs text-slate-500">
+                        Press Enter to check. Mastery goes up when correct.
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={checkTypeIt}
+                        className="px-4 py-2 rounded-full bg-orange-500 text-white text-sm shadow hover:bg-orange-600"
+                      >
+                        Check
+                      </button>
+                      <button
+                        onClick={() => speakWord(typeWord)}
+                        className="px-4 py-2 rounded-full bg-sky-500 text-white text-sm shadow hover:bg-sky-600"
+                      >
+                        Hear word
+                      </button>
+                    </div>
+
+                    {typeFeedback && (
+                      <div className="text-sm font-medium mt-1">{typeFeedback}</div>
+                    )}
+
+                    <div className="text-xs text-slate-400 mt-2">
+                      Pinyin: {typeWord.pinyin} · Example: {typeWord.sentenceZh}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {mode === "sentence" && (
+                <section className="bg-white rounded-3xl shadow-md border border-orange-100 p-4 sm:p-6 space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h2 className="text-lg font-semibold text-orange-900">
+                      Sentence Builder · Drag tiles into the right order
+                    </h2>
+                    <button
+                      onClick={resetSentence}
+                      className="text-xs text-slate-500 hover:text-slate-700 underline underline-offset-2"
+                    >
+                      New sentence
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="text-sm text-slate-600">
+                      Target word:{" "}
+                      <span className="font-semibold text-lg text-slate-900">
+                        {sentenceState.word.simp}
+                      </span>{" "}
+                      · {sentenceState.word.pinyin}
+                    </div>
+
+                    <div className="bg-orange-50/70 rounded-2xl p-3 border border-orange-100">
+                      <div className="text-xs uppercase tracking-wide text-orange-500 mb-1">
+                        English meaning of the sentence
+                      </div>
+                      <div className="text-sm sm:text-base">
+                        {sentenceState.word.sentenceEn}
+                      </div>
+                    </div>
+
+                    {/* Slots */}
+                    <div className="space-y-2">
+                      <div className="text-xs text-slate-500">
+                        Drag tiles into each slot in order:
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {sentenceState.slots.map((slot, idx) => {
+                          const status = sentenceState.statuses[idx];
+                          const base =
+                            "min-w-[60px] min-h-[40px] px-2 py-2 rounded-2xl flex items-center justify-center text-sm border-2 border-dashed bg-slate-50";
+                          let borderColor = "border-slate-300";
+                          if (status === "correct") borderColor = "border-emerald-500";
+                          else if (status === "wrong") borderColor = "border-rose-500";
+
+                          return (
+                            <div
+                              key={idx}
+                              className={`${base} ${borderColor}`}
+                              onDrop={(e) => handleSlotDrop(e, idx)}
+                              onDragOver={allowDrop}
+                            >
+                              {slot && (
+                                <div
+                                  draggable
+                                  onDragStart={(e) =>
+                                    handleChunkDragStart(e, slot, false, idx)
+                                  }
+                                  className="px-2 py-1 bg-white rounded-xl shadow text-slate-800 cursor-move"
+                                >
+                                  {slot.text}
+                                </div>
+                              )}
+                              {!slot && (
+                                <span className="text-[10px] text-slate-400">
+                                  Slot {idx + 1}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Pool */}
+                    <div className="space-y-2">
+                      <div className="text-xs text-slate-500">
+                        Remaining tiles (drag from here):
+                      </div>
+                      <div
+                        className="flex flex-wrap gap-2 min-h-[46px] bg-slate-50 rounded-2xl px-2 py-2 border border-dashed border-slate-300"
+                        onDrop={handlePoolDrop}
+                        onDragOver={allowDrop}
+                      >
+                        {sentenceState.pool.map((chunk, idx) => (
+                          <div
+                            key={chunk.id}
+                            draggable
+                            onDragStart={(e) =>
+                              handleChunkDragStart(e, chunk, true, idx)
+                            }
+                            className="px-2 py-1 bg-white rounded-xl shadow text-sm cursor-move"
+                          >
+                            {chunk.text}
+                          </div>
+                        ))}
+                        {sentenceState.pool.length === 0 && (
+                          <span className="text-[11px] text-slate-400">
+                            All tiles used ↑ (you can drag them back here to reset).
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={checkSentence}
+                        className="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm shadow hover:bg-emerald-600"
+                      >
+                        Check order
+                      </button>
+                      <button
+                        onClick={() => speakSentence(sentenceState.word)}
+                        className="px-4 py-2 rounded-full bg-sky-500 text-white text-sm shadow hover:bg-sky-600"
+                      >
+                        Hear sentence
+                      </button>
+                    </div>
+
+                    {sentenceState.lastResult && (
+                      <div className="text-sm font-medium">
+                        {sentenceState.lastResult}
+                      </div>
+                    )}
+
+                    <div className="text-xs text-slate-400">
+                      Original sentence: {sentenceState.word.sentenceZh}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* Collapsible wordlist table */}
+              <section className="bg-white/80 rounded-3xl border border-orange-100 p-3 sm:p-4">
+                <button
+                  onClick={() => setShowWordlist(v => !v)}
+                  className="flex items-center justify-between w-full text-sm font-semibold text-orange-900"
+                >
+                  <span>Wordlist table</span>
+                  <span className="text-xs text-slate-500">
+                    {showWordlist ? "Hide ▲" : "Show ▼"}
+                  </span>
+                </button>
+
+                {showWordlist && (
+                  <div className="mt-3 max-h-72 overflow-auto text-xs sm:text-sm">
+                    <table className="min-w-full text-left border-collapse">
+                      <thead className="sticky top-0 bg-orange-100 text-[11px] uppercase tracking-wide">
+                        <tr>
+                          <th className="px-2 py-1">汉字</th>
+                          <th className="px-2 py-1">Trad.</th>
+                          <th className="px-2 py-1">Pinyin</th>
+                          <th className="px-2 py-1">POS</th>
+                          <th className="px-2 py-1">English</th>
+                          <th className="px-2 py-1">Russian</th>
+                          <th className="px-2 py-1">Example (中)</th>
+                          <th className="px-2 py-1">Example (EN)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {WORDS.map(w => (
+                          <tr key={w.id} className="border-t border-slate-100">
+                            <td className="px-2 py-1 font-semibold text-lg">{w.simp}</td>
+                            <td className="px-2 py-1 text-slate-600">{w.trad}</td>
+                            <td className="px-2 py-1 text-slate-600">{w.pinyin}</td>
+                            <td className="px-2 py-1 text-slate-600">{w.pos}</td>
+                            <td className="px-2 py-1">{w.english}</td>
+                            <td className="px-2 py-1">{w.russian}</td>
+                            <td className="px-2 py-1 text-slate-700">{w.sentenceZh}</td>
+                            <td className="px-2 py-1 text-slate-500">{w.sentenceEn}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+            </div>
+          </main>
+
+          <footer className="py-3 text-center text-[11px] text-slate-400">
+            HSK3 Review Lab · Built with React + Tailwind · Progress stored locally in your browser
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
